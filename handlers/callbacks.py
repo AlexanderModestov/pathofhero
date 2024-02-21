@@ -43,9 +43,6 @@ def get_results(db_worker):
 @router.message(ProfileStatesGroup.age)
 async def callback_profile(message: types.Message, state: FSMContext) -> None:
     await state.update_data(age=message.text)
-    print(extract_text(message.text))
-    print(type(extract_text(message.text)))
-    print(extract_number(message.text))
     db_worker.insert_user([message.chat.id, extract_number(message.text), str(extract_text(message.text))])
     await state.clear()
     builder = InlineKeyboardBuilder()
@@ -124,20 +121,9 @@ async def callback_profile(callback: types.CallbackQuery):
         await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
         strategy = get_strategy(get_results(db_worker), callback.message.chat.id, poll_number)[0]
         strategies = get_strategy(get_results(db_worker), callback.message.chat.id, poll_number)[1]
-
-        print(strategy)
-
-        #archetypes = get_archetype(strategy)
-        #info = user_info[callback.message.chat.id]
-        #print('user info: ', info)
-        #archetypes_df = pd.DataFrame(data={'archetypes': archetypes, 'values': strategies})
-        #archetypes_list = archetypes_df.sort_values(by='values', ascending=False)[:3]['archetypes']
-        #archetypes_list = archetypes_list.values.tolist()
         await bot.send_message(callback.message.chat.id, '''*Лови свой результат! Это твоя ведущая стратегия – делай на нее ставку и не забывай прокачивать слабые стороны.*''',  parse_mode='markdown')
         await bot.send_message(callback.message.chat.id, strategy, parse_mode='markdown')
-
-        print('sfgdg')
         if db_worker.more_18(callback.message.chat.id):
             await bot.send_message(callback.message.chat.id, path_more_18, parse_mode='markdown')
         else:
-            await bot.send_message(callback.message.chat.id, path_less_18, parse_mode='markdown')
+            await bot.send_message(callback.message.chat.id, path_less_18, parse_mode='HTML')
