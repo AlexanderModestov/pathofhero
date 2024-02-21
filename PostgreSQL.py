@@ -60,7 +60,6 @@ class PostgreSQL:
     def insert_user(self, values):
         """ Получаем все строки """
         with self.connection:
-            print('insert into profile (user_id, age, name, created_at) values ({}, {}, {}, {})'.format(values[0], values[1], values[2], 'CURRENT_TIMESTAMP'))
             self.cursor.execute("insert into profile (user_id, age, name, created_at) values ({}, {}, \'{}\', {})".format(values[0], values[1], values[2], 'CURRENT_TIMESTAMP'))
     
     def create_profile(self, user_id):
@@ -79,8 +78,8 @@ class PostgreSQL:
         with self.connection:
             self.cursor.execute('SELECT age FROM profile WHERE user_id = {}'.format(user_id))
             age = self.cursor.fetchall()
-            print(age)
-            if age[0][0] > 18:
+            print(age[0][0])
+            if int(age[0][0]) > 18:
                 return True
             else:
                 return False
