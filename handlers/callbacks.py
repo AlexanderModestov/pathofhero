@@ -46,7 +46,7 @@ async def callback_profile(message: types.Message, state: FSMContext) -> None:
     print(extract_text(message.text))
     print(type(extract_text(message.text)))
     print(extract_number(message.text))
-    db_worker.insert_user([message.from_user.id, extract_number(message.text), str(extract_text(message.text))])
+    db_worker.insert_user([message.chat.id, extract_number(message.text), str(extract_text(message.text))])
     await state.clear()
     builder = InlineKeyboardBuilder()
     builder.button(text="Начать тест", callback_data="start_test")
@@ -137,7 +137,7 @@ async def callback_profile(callback: types.CallbackQuery):
         await bot.send_message(callback.message.chat.id, strategy, parse_mode='markdown')
 
         print('sfgdg')
-        if db_worker.more_18(callback.message.from_user.id):
+        if db_worker.more_18(callback.message.chat.id):
             await bot.send_message(callback.message.chat.id, path_more_18, parse_mode='markdown')
         else:
             await bot.send_message(callback.message.chat.id, path_less_18, parse_mode='markdown')
