@@ -76,7 +76,7 @@ class PostgreSQL:
 
     def more_18(self, user_id):
         with self.connection:
-            self.cursor.execute('SELECT age FROM profile WHERE user_id = {}'.format(user_id))
+            self.cursor.execute('SELECT age FROM profile WHERE user_id = {} order by created_at desc'.format(user_id))
             age = self.cursor.fetchall()
             print(age[0][0])
             if int(age[0][0]) > 18:
