@@ -17,7 +17,7 @@ async def cmd_start(message: types.Message):
     markup = InlineKeyboardMarkup(inline_keyboard=builder.export())
     await message.answer(text=first_step, reply_markup=markup)
     db_worker = PostgreSQL(config.database, config.user, config.password, config.host, config.port)
-    db_worker.create_profile(user_id=message.from_user.id)
+    #db_worker.create_profile(user_id=message.from_user.id)
     await message.delete()
 
 @router.message(Command('about'))
