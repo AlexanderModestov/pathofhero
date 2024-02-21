@@ -75,52 +75,79 @@ async def callback_profile(callback: types.CallbackQuery):
     poll_number = int(callback.data.split('|')[2])
     db_worker.insert_row([callback.message.chat.id, callback.message.from_user.id, poll_number, number, response])
     if number < 4:
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id)
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+        try:
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id)
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+        except:
+            print('Error')
         await bot.send_message(callback.message.chat.id, instructions_1, parse_mode='markdown')
         await bot.send_message(callback.message.chat.id, question_list[number],
                              parse_mode='markdown', reply_markup=gen_markup(answers_1, number, poll_number))
     elif number < 8:
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id)
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+        try:
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id)
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+        except:
+            print
         await bot.send_message(callback.message.chat.id, instructions_2, parse_mode='markdown')
         await bot.send_message(callback.message.chat.id, question_list[number],
                              parse_mode='markdown', reply_markup=gen_markup(answers_2, number, poll_number))
     elif number < 12:
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id)
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+        try:
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id)
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+        except:
+            print('Error')
         await bot.send_message(callback.message.chat.id, instructions_3, parse_mode='markdown')
         await bot.send_message(callback.message.chat.id, question_list[number],
                              parse_mode='markdown', reply_markup=gen_markup(answers_3, number, poll_number))
     elif number < 16:
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id)
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+        try:
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id)
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+        except:
+            print('Error')
         await bot.send_message(callback.message.chat.id, instructions_4, parse_mode='markdown')
         if number == 12:
             await bot.send_photo(callback.message.chat.id, FSInputFile('pictures/1.jpg'))
         elif number == 13:
-            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
+            try:
+                await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
+            except:
+                print('Error')
             await bot.send_photo(callback.message.chat.id, FSInputFile('pictures/2.jpg'))
         elif number == 14:
-            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
+            try:
+                await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
+            except:
+                print('Error')
             await bot.send_photo(callback.message.chat.id, FSInputFile('pictures/3.jpg'))
         else:
-            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
+            try:
+                await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
+            except:
+                print('Error')
             await bot.send_photo(callback.message.chat.id, FSInputFile('pictures/4.jpg'))
         await bot.send_message(callback.message.chat.id, text='*Варианты оценок:*', parse_mode='markdown', reply_markup=gen_markup(pictures, number, poll_number))
     elif number == 16:
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id)  # Добавил
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)  # Добавил
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2) 
+        try:
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id)
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2) 
+        except:
+            print('Error')
         await bot.send_message(callback.message.chat.id, text=instructions_5, parse_mode='markdown')
         await bot.send_photo(callback.message.chat.id, FSInputFile('strategies/icons_new.jpg'))
         await bot.send_message(callback.message.chat.id, '*Список символов:*',
                              parse_mode='markdown',
                              reply_markup=gen_markup_chips(symbols, number, 4, poll_number))
     else:
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id)
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
-        await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
+        try:
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id)
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 1)
+            await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
+        except:
+            print('Error')
         strategy = get_strategy(get_results(db_worker), callback.message.chat.id, poll_number)[0]
         strategies = get_strategy(get_results(db_worker), callback.message.chat.id, poll_number)[1]
         await bot.send_message(callback.message.chat.id, '''*Лови свой результат! Это твоя ведущая стратегия – делай на нее ставку и не забывай прокачивать слабые стороны.*''',  parse_mode='markdown')
