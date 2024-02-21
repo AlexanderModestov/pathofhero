@@ -23,15 +23,9 @@ class PostgreSQL:
                                 """)
             self.cursor.execute("""CREATE TABLE IF NOT EXISTS profile(
                                             user_id bigint,
-                                            name TEXT,
-                                            age TEXT,
-                                            location TEXT,
-                                            position TEXT,
-                                            links TEXT,
-                                            satisfaction TEXT,
-                                            interests TEXT,
-                                            hobbies TEXT,
-                                            achievments TEXT)
+                                            age int,
+                                            name varchar(50),
+                                            created_at TIMESTAMP WITH TIME ZONE)
                                 """)
 
     def get_poll(self, chat_id):
@@ -60,10 +54,15 @@ class PostgreSQL:
             return self.cursor.fetchall()
     
     def insert_row(self, values):
-        """ Получаем все строки """
         with self.connection:
             self.cursor.execute('insert into answers (chat_id, user_id, poll_number, question_id, response, timestamp) values ({}, {}, {}, {}, {}, {})'.format(values[0], values[1], values[2], values[3], values[4], 'CURRENT_TIMESTAMP'))
 
+    def insert_user(self, values):
+        """ Получаем все строки """
+        with self.connection:
+            print('insert into profile (user_id, age, name, created_at) values ({}, {}, {}, {})'.format(values[0], values[1], values[2], 'CURRENT_TIMESTAMP'))
+            self.cursor.execute("insert into profile (user_id, age, name, created_at) values ({}, {}, \'{}\', {})".format(values[0], values[1], values[2], 'CURRENT_TIMESTAMP'))
+    
     def create_profile(self, user_id):
         with self.connection:
             #user = self.cursor.execute("SELECT 1 FROM profile WHERE user_id = {}".format(user_id)).fetchone()

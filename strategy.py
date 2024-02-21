@@ -12,8 +12,8 @@ def get_strategy(results, chat_id, poll_number):
     df = pd.DataFrame(results, columns=['chat_id', 'user_id', 'poll_number', 'question_id', 'response', 'timestamp'])
     df = df[df['poll_number'] == poll_number]
     df = df[df['chat_id'] == (chat_id)]
-    icon = df[df['question_id'] == 25][['response']].iloc[0,0]
-    df = df[df['question_id'] != 25]
+    icon = df[df['question_id'] == 17][['response']].iloc[0,0]
+    df = df[df['question_id'] < 17]
     strategies.append(df[df['question_id'].isin([1,4])][['response']].sum(axis=0)['response'])
     strategies.append(df[df['question_id'].isin([2,5])][['response']].sum(axis=0)['response'])
     strategies.append(df[df['question_id'].isin([3,6])][['response']].sum(axis=0)['response'])

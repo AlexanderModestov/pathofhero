@@ -1,12 +1,22 @@
+from aiogram import Router, types
+from aiogram.filters import CommandStart, Command
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
+from PostgreSQL import PostgreSQL
+import config
+import scenario
 
+router = Router()
 
+first_step = scenario.first_step
 
 @router.message(CommandStart())
 async def cmd_start(message: types.Message):
     builder = InlineKeyboardBuilder()
-    builder.button(text="Заполнить профиль", callback_data="profile")
+    builder.button(text="Поехали!?", callback_data="profile")
     markup = InlineKeyboardMarkup(inline_keyboard=builder.export())
     await message.answer(text=first_step, reply_markup=markup)
+    db_worker = PostgreSQL(config.database, config.user, config.password, config.host, config.port)
     db_worker.create_profile(user_id=message.from_user.id)
     await message.delete()
 

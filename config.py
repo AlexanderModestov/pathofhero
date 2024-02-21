@@ -16,8 +16,10 @@ TOKEN = os.environ.get("TOKEN")
 #password = os.environ.get("PASSWORD")
 #port = os.environ.get("PORT")
 
-database = 'dfe7n9tqm5cq2'
-host = 'ec2-52-210-44-5.eu-west-1.compute.amazonaws.com'
-user = 'ceangsfkkcakpj'
-password = '7e4295dbbd5a2bda1868d58d2307b9eaa1dfc4812c42408ac68727645350b1ec'
-port = 5432
+###############################################################################
+database='postgres'
+host='psychobot.postgres.database.azure.com'
+user='alexmodestov'
+password='PostgreSQL!#'
+port=5432
+DATABASE_URL = 'postgresql+asyncpg://alexmodestov:PostgreSQL!#@psychobot.postgres.database.azure.com:5432/postgres'
