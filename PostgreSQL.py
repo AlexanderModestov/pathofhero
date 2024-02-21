@@ -75,6 +75,17 @@ class PostgreSQL:
         #    cur.execute("UPDATE profile SET photo = '{}', age = '{}', description = '{}', name = '{}' WHERE user_id == '{}'".format(
         #    data['photo'], data['age'], data['description'], data['name'], user_id))
 
+    def more_18(self, user_id):
+        with self.connection:
+            self.cursor.execute('SELECT age FROM profile WHERE user_id = {}'.format(user_id))
+            age = self.cursor.fetchall()
+            print(age)
+            if age[0][0] > 18:
+                return True
+            else:
+                return False
+    
+    
     def close(self):
         """ Закрываем текущее соединение с БД """
         self.connection.close()

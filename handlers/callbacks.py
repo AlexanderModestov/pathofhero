@@ -28,6 +28,8 @@ instructions_2 = scenario.instructions_2
 instructions_3 = scenario.instructions_3
 instructions_4 = scenario.instructions_4
 instructions_5 = scenario.instructions_5
+path_more_18 = scenario.path_more_18
+path_less_18 = scenario.path_less_18
 
 TOKEN = config.TOKEN
 bot = Bot(TOKEN)
@@ -106,7 +108,6 @@ async def callback_profile(callback: types.CallbackQuery):
         else:
             await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
             await bot.send_photo(callback.message.chat.id, FSInputFile('pictures/4.jpg'))
-        print(pictures)
         await bot.send_message(callback.message.chat.id, text='*Варианты оценок:*', parse_mode='markdown', reply_markup=gen_markup(pictures, number, poll_number))
     elif number == 16:
         await bot.delete_message(callback.message.chat.id, callback.message.message_id)  # Добавил
@@ -123,14 +124,20 @@ async def callback_profile(callback: types.CallbackQuery):
         await bot.delete_message(callback.message.chat.id, callback.message.message_id - 2)
         strategy = get_strategy(get_results(db_worker), callback.message.chat.id, poll_number)[0]
         strategies = get_strategy(get_results(db_worker), callback.message.chat.id, poll_number)[1]
+
+        print(strategy)
+
+        #archetypes = get_archetype(strategy)
         #info = user_info[callback.message.chat.id]
         #print('user info: ', info)
-        archetypes_df = pd.DataFrame(data={'archetypes': archetypes, 'values': strategies})
-        archetypes_list = archetypes_df.sort_values(by='values', ascending=False)[:3]['archetypes']
-        archetypes_list = archetypes_list.values.tolist()
-        await bot.send_message(callback.message.chat.id, '''*Спасибо за ответы!*\n\nПолучился профиль, описывающий твою профессиональную и личную уникальность.\n\nИспользуй его для самопрезентации и создания позиционирования.''',  parse_mode='markdown')
-        await bot.send_message(callback.message.chat.id, strategy + '\n' +
-                                   '*Описание твоих основных талантов:*' + '\n\n' +
-                                   archetype_descriptions[archetypes_list[0]] + '\n\n' +
-                                   archetype_descriptions[archetypes_list[1]] + '\n\n' + archetype_descriptions[archetypes_list[2]]
-                                   , parse_mode='markdown')
+        #archetypes_df = pd.DataFrame(data={'archetypes': archetypes, 'values': strategies})
+        #archetypes_list = archetypes_df.sort_values(by='values', ascending=False)[:3]['archetypes']
+        #archetypes_list = archetypes_list.values.tolist()
+        await bot.send_message(callback.message.chat.id, '''*Лови свой результат! Это твоя ведущая стратегия – делай на нее ставку и не забывай прокачивать слабые стороны.*''',  parse_mode='markdown')
+        await bot.send_message(callback.message.chat.id, strategy, parse_mode='markdown')
+
+        print('sfgdg')
+        if db_worker.more_18(callback.message.from_user.id):
+            await bot.send_message(callback.message.chat.id, path_more_18, parse_mode='markdown')
+        else:
+            await bot.send_message(callback.message.chat.id, path_less_18, parse_mode='markdown')
