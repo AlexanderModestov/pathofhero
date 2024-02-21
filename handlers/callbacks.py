@@ -48,9 +48,11 @@ async def callback_profile(message: types.Message, state: FSMContext) -> None:
     builder = InlineKeyboardBuilder()
     builder.button(text="Начать тест", callback_data="start_test")
     markup = InlineKeyboardMarkup(inline_keyboard=builder.export())
-    await bot.edit_message_text(chat_id=message.chat.id, message_id=message.message_id-1, 
+    #await bot.edit_message_text(chat_id=message.chat.id, message_id=message.message_id-1, 
+    #                            text="Сейчас будет блок вопросов, чтобы подсветить твою выигрышную персональную стратегию и уникальное сочетание талантов.", reply_markup=markup)
+    await bot.send_message(chat_id=message.chat.id, 
                                 text="Сейчас будет блок вопросов, чтобы подсветить твою выигрышную персональную стратегию и уникальное сочетание талантов.", reply_markup=markup)
-    await message.delete()
+    #await message.delete()
 
 @router.callback_query(F.data == "profile")
 async def callback_profile(callback: types.CallbackQuery, state: FSMContext):
